@@ -88,7 +88,7 @@ if __name__ == '__main__':
     while not exit.is_set():
 
         r = requests.get('http://api.weatherapi.com/v1/current.json?key=' +
-                         config['token'] + '&q=' + config['lat'] + ',' + config['lon'] + '&aqi=no')
+                         config['token'] + '&q=' + config['lat'] + ',' + config['lon'] + '&aqi=yes')
 
         if r.status_code == 200:
             weatherapi.extract_temp(r.json())
