@@ -1,0 +1,8 @@
+.vscode
+__pycache__
+docker-compose.yml
+Dockerfile
+LICENSE
+README.md
+response.json
+test.py
