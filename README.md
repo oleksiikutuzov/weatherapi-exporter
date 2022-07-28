@@ -4,8 +4,7 @@ Local weatherapi.com parser and exporter for Prometheus
 ```
 Environment variables used to configure the exporter.
 HOST_PORT           Sets port to expose the prometheus metrics on. default to 9090
-LATITUDE            Sets the latitude to use for the location
-LONGITUDE           Sets the longitude to use for the location
+LOCATION            Sets the location to use for the location
 WEATHERAPI_TOKEN    Sets the weatherapi token to use for the API calls
 UPDATE_INTERVAL     Sets interval between updates in seconds, default is 10.0 seconds
 ```
@@ -14,7 +13,7 @@ UPDATE_INTERVAL     Sets interval between updates in seconds, default is 10.0 se
 
 You can run the image in the background with the following command:
 ```
-docker run -d -p 8090:9090 --restart unless-stopped -e HOST_PORT=9090 -e LATITUDE=XXXXXX -e LONGITUDE=XXXXXX -e WEATHERAPI_TOKEN=XXXXXX -e UPDATE_INTERVAL=10.0 --name weatherapi-exporter oleksiikutuzov/weatherapi-exporter
+docker run -d -p 8090:9090 --restart unless-stopped -e HOST_PORT=9090 -e LOCATION=XXXXXX -e WEATHERAPI_TOKEN=XXXXXX -e UPDATE_INTERVAL=10.0 --name weatherapi-exporter oleksiikutuzov/weatherapi-exporter
 ```
 
 To check image status:
@@ -52,8 +51,7 @@ services:
       - 8090:9090
     environment:
       HOST_PORT: 9090
-      LATITUDE: XXXXXX
-      LONGITUDE: XXXXXX
+      LOCATION: XXXXXX
       WEATHERAPI_TOKEN: XXXXXX
       UPDATE_INTERVAL: 10.0
 ```
@@ -104,8 +102,7 @@ Type=simple
 User=<username>
 Restart=always
 Environment=HOST_PORT=8080
-Environment=LATITUDE=XXXX
-Environment=LONGITUDE=XXXX
+Environment=LOCATION=XXXX
 Environment=WEATHERAPI_TOKEN=XXXX
 Environment=UPDATE_INTERVAL=10
 ExecStart=/usr/bin/python3 /home/<username>/weatherapi-exporter/main.py

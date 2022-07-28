@@ -11,15 +11,13 @@ import requests
 """
 Environment variable labels used to read values from.
 HOST_PORT               Sets port to run the prometheus http server, default to 9090
-LATITUDE                Sets the latitude to use for the data export
-LONGITUDE               Sets the longitude to use for the data export
+LOCATION                Sets the location to use for the data export
 WEATHERAPI_TOKEN        Sets weatherapi token
 UPDATE_INTERVAL         Sets interval between updates in seconds, default is 10.0 seconds
 """
 
 PORT_LABEL = 'HOST_PORT'
-LATITUDE_LABEL = 'LATITUDE'
-LONGITUDE_LABEL = 'LONGITUDE'
+LOCATION_LABEL = 'LOCATION'
 TOKEN_LABEL = 'WEATHERAPI_TOKEN'
 TIMEOUT_LABEL = 'UPDATE_INTERVAL'
 
@@ -32,8 +30,7 @@ def signalShuttdown(self, *args):
 
 config = {
     'host_port': 9090,
-    'lat': '',
-    'lon': '',
+    'location': '',
     'token': '',
     'timeout': 10.0
 }
@@ -42,11 +39,8 @@ config = {
 if PORT_LABEL in os.environ:
     config['host_port'] = int(os.environ[PORT_LABEL])
 
-if LATITUDE_LABEL in os.environ:
-    config['lat'] = os.environ[LATITUDE_LABEL]
-
-if LONGITUDE_LABEL in os.environ:
-    config['lon'] = os.environ[LONGITUDE_LABEL]
+if LOCATION_LABEL in os.environ:
+    config['location'] = os.environ[LOCATION_LABEL]
 
 if TOKEN_LABEL in os.environ:
     config['token'] = os.environ[TOKEN_LABEL].strip()
@@ -70,12 +64,12 @@ if __name__ == '__main__':
 
     if not config['token']:
         logger.error(
-            f"Demo aqicn token provided. Please provide token.")
+            f"No token provided. Please provide token.")
         sys.exit(1)
 
-    if not config['lat'] or not config['lon']:
+    if not config['location']:
         logger.error(
-            f"Latitude or longitude not set. Please set them in the environment variables.")
+            f"Location not set. Please set it in the environment variables.")
         sys.exit(1)
 
     start_http_server(config['host_port'])
@@ -88,7 +82,7 @@ if __name__ == '__main__':
     while not exit.is_set():
 
         r = requests.get('http://api.weatherapi.com/v1/current.json?key=' +
-                         config['token'] + '&q=' + config['lat'] + ',' + config['lon'] + '&aqi=yes')
+                         config['token'] + '&q=' + config['location'] + '&aqi=yes')
 
         if r.status_code == 200:
             weatherapi.extract_temp(r.json())
