@@ -89,7 +89,7 @@ if __name__ == '__main__':
             logger.info(f"Request succeeded")
         else:
             logger.error(
-                f"Request did not result in a successful status, {r.json()['status']}.")
+                f"Request did not result in a successful status, {r.json()['error']['message']}")
 
         sleepTime = 0.0
 
